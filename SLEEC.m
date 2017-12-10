@@ -6,12 +6,12 @@ function [result_out] = SLEEC(data, SLEECparams)
 % data.Y : sparse n x l matrix containng train labels
 % data.Yt : sparse n x l matrix containng test labels
 
-    rng('default')
+    %rng('default')
     cd SLEEC
      
-    trained_model = 1;
+    trained_model = 0;
     if trained_model
-        load('../Toy_Example/result.mat');
+        %load('../Toy_Example/result.mat');
         assign_mat = result.assign_mat;
         clusterCenters = result.clusterCenters;
         tim_clus = result.tim_clus;

@@ -1,6 +1,7 @@
-data_save = 0;
+data_save = 1;
 cd ReadData_Matlab
 if data_save
+    fprintf('load data\n');
     load('dataset/Wiki10/wiki10.mat');
 else
     data = {};
@@ -24,7 +25,7 @@ wiki10Params
 % run SLEEC
 cd ../../../
 fprintf('run SLEEC\n');
-result = SLEEC(data, Params);
+result = SLEEC(data, params);
 fprintf('save result\n');
 save('ReadData_Matlab/dataset/Wiki10/result.mat', 'result');
 % calculate recall
