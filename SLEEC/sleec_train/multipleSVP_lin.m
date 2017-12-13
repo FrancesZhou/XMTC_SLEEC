@@ -3,6 +3,7 @@
 % For each clustering, save
 function [SVPModel, SVPtime_mat, regressiontime_mat, SVPMLparams] = multipleSVP_lin(data, assign_mat, normData, SVPMLparams, fname)
 addpath(genpath('prcpy'));
+addpath(genpath('liblinear-2.20/matlab'));
 XX=normData.X;
 XXT=normData.Xt;
 T = size(assign_mat, 1);

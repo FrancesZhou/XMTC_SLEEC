@@ -1,8 +1,10 @@
 %Make SLEEC
 cd SLEEC
 make
-
-cd ../ReadData_Matlab
+cd sleec_train/liblinear-2.20/matlab
+make
+cd ../../../
+cd ReadData_Matlab
 make
 
 cd ..
