@@ -38,7 +38,10 @@ else
     fprintf('run SLEEC\n');
     result = SLEEC(data, params, model_save, result, 30);
 end
-
+if result_save
+    fprintf('save result\n');
+    save('ReadData_Matlab/dataset/AmazonCat-13K/result.mat', 'result');
+end
 % ==================== calculate_candidate_label =======
 if calculate_candidate
     data_train = {};
@@ -52,10 +55,6 @@ if calculate_candidate
     candidate_test = int64(result_test.predictLabels');
     save('ReadData_Matlab/dataset/AmazonCat-13K/candidate_train.mat', 'candidate_train');
     save('ReadData_Matlab/dataset/AmazonCat-13K/candidate_test.mat', 'candidate_test');
-end
-if result_save
-    fprintf('save result\n');
-    save('ReadData_Matlab/dataset/AmazonCat-13K/result.mat', 'result');
 end
 % calculate recall
 fprintf('calculate recall\n');
