@@ -1,4 +1,4 @@
-function [result] = run_for_wiki10(data_save, model_save, result_save, calculate_candidate)
+function [result] = run_for_amazonCat13K(data_save, model_save, result_save, calculate_candidate)
 
 % data_save = 1;
 % model_save = 1;
@@ -7,25 +7,25 @@ cd ReadData_Matlab
 % ======================= data ======================
 if data_save
     fprintf('load data\n');
-    load('dataset/Wiki10/wiki10.mat');
+    load('dataset/AmazonCat-13K/AmazonCat13K.mat');
 else
     data = {};
     fprintf('read train data\n');
-    [x, y] = read_data('dataset/Wiki10/train_data.txt');
+    [x, y] = read_data('dataset/AmazonCat-13K/train_data.txt');
     data.X = x';
     data.Y = y';
     fprintf('read test data\n');
-    [x, y] = read_data('dataset/Wiki10/test_data.txt');
+    [x, y] = read_data('dataset/AmazonCat-13K/test_data.txt');
     data.Xt = x';
     data.Yt = y';
-    data.name = 'wiki10';
+    data.name = 'AmazonCat-13K';
     fprintf('save data\n');
-    save('dataset/Wiki10/wiki10.mat', 'data');
+    save('dataset/AmazonCat-13K/AmazonCat13K.mat', 'data');
 end
 % ==================== params =======================
-cd dataset/Wiki10
+cd dataset/AmazonCat-13K
 fprintf('load params\n');
-wiki10Params
+amazonParams
 % ==================== model ========================
 if model_save
     fprintf('load trained model\n');
@@ -50,16 +50,16 @@ if calculate_candidate
     result_test = SLEEC(data, params, 1, result, 30);
     candidate_train = int64(result_train.predictLabels');
     candidate_test = int64(result_test.predictLabels');
-    save('ReadData_Matlab/dataset/Wiki10/candidate_train.mat', 'candidate_train');
-    save('ReadData_Matlab/dataset/Wiki10/candidate_test.mat', 'candidate_test');
+    save('ReadData_Matlab/dataset/AmazonCat-13K/candidate_train.mat', 'candidate_train');
+    save('ReadData_Matlab/dataset/AmazonCat-13K/candidate_test.mat', 'candidate_test');
 end
 if result_save
     fprintf('save result\n');
-    save('ReadData_Matlab/dataset/Wiki10/result.mat', 'result');
+    save('ReadData_Matlab/dataset/AmazonCat-13K/result.mat', 'result');
 end
 % calculate recall
 fprintf('calculate recall\n');
-cd ReadData_Matlab/dataset/Wiki10
+cd ReadData_Matlab/dataset/AmazonCat-13K
 analyze
 
 

@@ -1,4 +1,4 @@
-function [result_out] = SLEEC(data, SLEECparams)
+function [result_out] = SLEEC(data, SLEECparams, trained_model, result, returnK)
 
 % data : structure containing the complete (obtained using readData.m)
 % data.X : sparse n x d matrix containng train features
@@ -9,7 +9,7 @@ function [result_out] = SLEEC(data, SLEECparams)
     %rng('default')
     cd SLEEC
      
-    trained_model = 0;
+    %trained_model = 0;
     if trained_model
         %load('../Toy_Example/result.mat');
         assign_mat = result.assign_mat;
@@ -48,7 +48,7 @@ function [result_out] = SLEEC(data, SLEECparams)
         cd ../sleec_test
     end
     
-    [result, predictAcc, predictLabels, val_w, tim_test, KNN] = multiplePrediction_lin(data, assign_mat, clusterCenters, SVPModel, SVPMLparams, SLEECparams.NNtest, SLEECparams.num_learners, SLEECparams.num_threads);
+    [result, predictAcc, predictLabels, val_w, tim_test, KNN] = multiplePrediction_lin(data, assign_mat, clusterCenters, SVPModel, SVPMLparams, SLEECparams.NNtest, SLEECparams.num_learners, SLEECparams.num_threads, returnK);
     
     result_out.assign_mat = assign_mat;
     result_out.clusterCenters = clusterCenters;

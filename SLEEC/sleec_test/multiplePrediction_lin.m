@@ -1,4 +1,4 @@
-function [result, predictAcc, predictLabels, val_w, tim_test, KNN] = multiplePrediction_lin(data, assign_mat, clusterCenters, SVPModel, SVPMLparams, NNtest, T, numThreads)
+function [result, predictAcc, predictLabels, val_w, tim_test, KNN] = multiplePrediction_lin(data, assign_mat, clusterCenters, SVPModel, SVPMLparams, NNtest, T, numThreads, returnK)
 
 if(SVPMLparams.AG == 2)
     XTAG = normalizeMatrix(data.Xt);
@@ -53,7 +53,7 @@ for t = 1:T
   
 end
 tim_test = toc(tt);
-returnK = 20;
+%returnK = 20;
 [predictAcc, predictLabels, val_w] = evalPrec_rf(data.Y', data.Yt', KNN', numNeighPerClus*T, returnK, numThreads);
 %[predictLabels2, val_w2] = evalPrec_rf_knn(data.Y', data.Yt', KNN', numNeighPerClus*T, returnK, numThreads);
 result = sum(predictAcc, 2)/nt;

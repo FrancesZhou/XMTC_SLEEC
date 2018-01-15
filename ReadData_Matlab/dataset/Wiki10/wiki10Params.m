@@ -21,5 +21,6 @@ params.w_thresh = 0.75;
 params.sp_thresh = 0.5;
 params.cost = 0.1;
 params.NNtest = 11;
+%params.NNtest = 35;
 params.normalize = 1;
 params.fname = 'SLEEC';
