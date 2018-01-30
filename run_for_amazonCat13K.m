@@ -35,13 +35,16 @@ else
     result = {};
     % run SLEEC
     cd ../../../
-    fprintf('run SLEEC\n');
-    result = SLEEC(data, params, model_save, result, 30);
 end
+
+fprintf('run SLEEC\n');
+result = SLEEC(data, params, model_save, result, 30, 'AmazonCat-13K/test_score_mat.txt');
+
 if result_save
     fprintf('save result\n');
     save('ReadData_Matlab/dataset/AmazonCat-13K/result.mat', 'result');
 end
+
 % ==================== calculate_candidate_label =======
 if calculate_candidate
     data_train = {};
@@ -49,17 +52,14 @@ if calculate_candidate
     data_train.Y = data.Y;
     data_train.Xt = data.X;
     data_train.Yt = data.Y;
-    result_train = SLEEC(data_train, params, 1, result, 30);
-    result_test = SLEEC(data, params, 1, result, 30);
-    candidate_train = int64(result_train.predictLabels');
-    candidate_test = int64(result_test.predictLabels');
-    save('ReadData_Matlab/dataset/AmazonCat-13K/candidate_train.mat', 'candidate_train');
-    save('ReadData_Matlab/dataset/AmazonCat-13K/candidate_test.mat', 'candidate_test');
+    result_train = SLEEC(data_train, params, 1, result, 30, 'AmazonCat-13K/train_score_mat.txt');
+    %result_test = SLEEC(data, params, 1, result, 30);
+    %candidate_train = int64(result_train.predictLabels');
+    %candidate_test = int64(result_test.predictLabels');
+    %save('ReadData_Matlab/dataset/AmazonCat-13K/candidate_train.mat', 'candidate_train');
+    %save('ReadData_Matlab/dataset/AmazonCat-13K/candidate_test.mat', 'candidate_test');
 end
-% calculate recall
-fprintf('calculate recall\n');
-cd ReadData_Matlab/dataset/AmazonCat-13K
-analyze
+
 
 
 

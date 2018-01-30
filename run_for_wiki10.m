@@ -35,9 +35,12 @@ else
     result = {};
     % run SLEEC
     cd ../../../
-    fprintf('run SLEEC\n');
-    result = SLEEC(data, params, model_save, result, 30);
 end
+
+fprintf('run SLEEC\n');
+result = SLEEC(data, params, model_save, result, 30, 'Wiki10/test_score_mat.txt');
+%candidate_test = int64(result.predictLabels');
+%save('ReadData_Matlab/dataset/Wiki10/candidate_test.mat', 'candidate_test');
 
 % ==================== calculate_candidate_label =======
 if calculate_candidate
@@ -46,12 +49,11 @@ if calculate_candidate
     data_train.Y = data.Y;
     data_train.Xt = data.X;
     data_train.Yt = data.Y;
-    result_train = SLEEC(data_train, params, 1, result, 30);
-    result_test = SLEEC(data, params, 1, result, 30);
+    result_train = SLEEC(data_train, params, 1, result, 30, 'Wiki10/train_score_mat.txt');
+    %result_test = SLEEC(data, params, 1, result, 30);
     candidate_train = int64(result_train.predictLabels');
-    candidate_test = int64(result_test.predictLabels');
+    %candidate_test = int64(result_test.predictLabels');
     save('ReadData_Matlab/dataset/Wiki10/candidate_train.mat', 'candidate_train');
-    save('ReadData_Matlab/dataset/Wiki10/candidate_test.mat', 'candidate_test');
 end
 if result_save
     fprintf('save result\n');

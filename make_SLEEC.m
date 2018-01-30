@@ -3,7 +3,7 @@ cd SLEEC
 make
 cd sleec_train/liblinear-2.20/matlab
 make
-cd ../../../
+cd ../../../../
 cd ReadData_Matlab
 make
 

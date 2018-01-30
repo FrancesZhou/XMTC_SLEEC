@@ -7,8 +7,11 @@
 #include <cstring>
 #include "smat.h"
 #include <algorithm>
+#include <fstream>
 #include <iostream>  
 #include <omp.h>
+
+using namespace std;
 
 #define printf //printf
 #define fflush //fflush
@@ -77,9 +80,13 @@ int compVLPair(const void *a, const void *b){
 		return 1;
 }
 
-void eval_prec_k_mult(smat_t Y, smat_t Yt, double *KNN, double *result, long long n, long long l, long long nt, long long numneighbors, long long returnK, double *pred_val, double *val, int numThreads)
+void eval_prec_k_mult(smat_t Y, smat_t Yt, double *KNN, double *result, long long n, long long l, long long nt, long long numneighbors, long long returnK, double *pred_val, double *val, int numThreads, char *score_file)
 {
-    
+    //score_file = "../../ReadData_Matlab/dataset/" + score_file;
+    ofstream outfile;
+	outfile.open(score_file);
+	outfile << nt << " " << l << endl;
+
    #pragma omp parallel for num_threads(numThreads)
 	for(long long dataIter = 0; dataIter < nt; dataIter ++)
 	{   
@@ -122,20 +129,31 @@ void eval_prec_k_mult(smat_t Y, smat_t Yt, double *KNN, double *result, long lon
 		}
 		qsort(vl, count, sizeof(vlPair), compVLPair);
 		
+		// write vl into score file
+		for(int i=0; i<count; i++)
+		{
+			vl[i].val /= numneighbors;
+			if(i==0)
+				outfile << vl[i].loc << ":" << vl[i].val;
+			else
+				outfile << " " << vl[i].loc << ":" << vl[i].val;
+		}
+		if(dataIter < nt-1)
+			outfile << endl;
+
+		// get the detailed candidate subset
 		for (int i = 0; i < returnK; i++)
 		{
 			pred_val[i + dataIter*returnK] = vl[i].loc;
 			val[i + dataIter*returnK] = vl[i].val;
 		}
-
-		// get the detailed candidate subset
 		/*
 		for (int i = 0; i < min(numneighbors, count); i++)
 		{
 			val[i + dataIter*numneighbors*5] = vl[i].val;
 		}
 		*/
-		
+
 		for(int pIter = 0; pIter < returnK; pIter ++)
 		{
 			if(count < pIter)
@@ -160,6 +178,7 @@ void eval_prec_k_mult(smat_t Y, smat_t Yt, double *KNN, double *result, long lon
 		free(vl);
         free(prec);
 	}
+	outfile.close();
     
 }
 
@@ -182,6 +201,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	double *result;
 	double *pred_val;
 	double *val;
+
+	char *score_file;
 	
 	#define YINP		prhs[0]
 	#define YTINP 		prhs[1]
@@ -209,6 +230,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	numThreads = *(mxGetPr(prhs[5]));
 
 	returnK = *(mxGetPr(prhs[4]));
+	score_file = mxArrayToString(prhs[6]);
     
 	n = mxGetN(prhs[0]);
 	l = mxGetM(prhs[0]);
@@ -222,5 +244,5 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	VAL = mxCreateDoubleMatrix(returnK, nt, mxREAL);
 	val = mxGetPr(VAL);
 	
-	eval_prec_k_mult(Y, Yt, KNN, result, n, l, nt, numneighbors, returnK, pred_val, val, numThreads);
+	eval_prec_k_mult(Y, Yt, KNN, result, n, l, nt, numneighbors, returnK, pred_val, val, numThreads, score_file);
 }
