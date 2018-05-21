@@ -51,18 +51,19 @@ if calculate_candidate
     data_train.Yt = data.Y;
     result_train = SLEEC(data_train, params, 1, result, 30, 'Wiki10/train_score_mat.txt');
     %result_test = SLEEC(data, params, 1, result, 30);
-    candidate_train = int64(result_train.predictLabels');
+    %candidate_train = int64(result_train.predictLabels');
     %candidate_test = int64(result_test.predictLabels');
-    save('ReadData_Matlab/dataset/Wiki10/candidate_train.mat', 'candidate_train');
+    %save('ReadData_Matlab/dataset/Wiki10/candidate_train.mat', 'candidate_train');
 end
 if result_save
     fprintf('save result\n');
     save('ReadData_Matlab/dataset/Wiki10/result.mat', 'result');
 end
+print result.precision
 % calculate recall
-fprintf('calculate recall\n');
-cd ReadData_Matlab/dataset/Wiki10
-analyze
+% fprintf('calculate recall\n');
+% cd ReadData_Matlab/dataset/Wiki10
+% analyze
 
 
 
