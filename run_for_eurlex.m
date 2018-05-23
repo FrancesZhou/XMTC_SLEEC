@@ -1,7 +1,7 @@
 function [result] = run_for_eurlex(data_save, model_save, result_save, calculate_candidate)
 
 subdir_name = 'valid_label_data/';
-subdir_name = 'all_label_data/';
+%subdir_name = 'all_label_data/';
 
 % data_save = 1;
 % model_save = 1;
@@ -10,7 +10,7 @@ cd ReadData_Matlab
 % ======================= data ======================
 if data_save
     fprintf('load data\n');
-    load('dataset/EUR-Lex/eurlex.mat');
+    load(['dataset/EUR-Lex/', subdir_name, 'eurlex.mat']);
 else
     data = {};
     fprintf('read train data\n');
